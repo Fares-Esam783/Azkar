@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-3">جميع الأذكار</h2>
+
+
+<form method="get" class="mb-4">
+
+    <div class="input-group">
+
+        <input type="text" 
+               class="form-control"
+               placeholder="ابحث عن ذكر..."
+               name="q"
+               value="{{ query }}">
+
+        <button class="btn btn-outline-secondary" type="submit">
+            <i class="bi bi-search"></i>
+        </button>
+
+    </div>
+
+</form>
+
+
+
+<div class="list-group">
+
+{% for item in dhikr %}
+    <a href="{% url 'dhikr_detail' item.id %}" 
+       class="list-group-item list-group-item-action">
+        {{ item.text|truncatewords:12 }}
+    </a>
+{% empty %}
+    <p>لا توجد نتائج مطابقة.</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}

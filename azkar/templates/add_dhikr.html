@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>إضافة ذكر جديد</h2>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+        {{ form.text.label }}
+        {{ form.text }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.category.label }}
+        {{ form.category }}
+    </div>
+
+    <button class="btn btn-primary">إضافة</button>
+
+</form>
+
+{% endblock %}
