@@ -133,8 +133,8 @@ function toggleDark(){
 
 
 // أسهم الكيبورد
-var nextUrl = "{% if next %}{% url 'dhikr_detail' next.id %}{% endif %}";
-var prevUrl = "{% if prev %}{% url 'dhikr_detail' prev.id %}{% endif %}";
+var nextUrl = "{% if prev %}{% url 'dhikr_detail' prev.id %}{% endif %}";
+var prevUrl = "{% if next %}{% url 'dhikr_detail' next.id %}{% endif %}";
 
 document.addEventListener("keydown", function(e){
 
