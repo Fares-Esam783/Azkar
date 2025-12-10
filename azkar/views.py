@@ -5,7 +5,7 @@ from .forms import DhikrForm
 
 def all_dhikr(request):
 
-    query = request.GET.get("q")   # الكلمة التي يكتبها المستخدم
+    query = request.GET.get("q")   
 
     if query:
         dhikr_list = Dhikr.objects.filter(text__icontains=query)
@@ -33,10 +33,8 @@ def dhikr_detail(request, dhikr_id):
 
     item = Dhikr.objects.get(id=dhikr_id)
 
-    # جلب الذكر التالي
     next_item = Dhikr.objects.filter(id__gt=item.id).order_by("id").first()
 
-    # جلب الذكر السابق
     prev_item = Dhikr.objects.filter(id__lt=item.id).order_by("-id").first()
 
     return render(request, "dhikr_detail.html", {
