@@ -19,15 +19,15 @@ def all_dhikr(request):
 
 
 def category_list(request):
-  categories = Category.objects.all()
-  return render(request, "category_list.html", {"categories": categories})
+    categories = Category.objects.all()
+    return render(request, "category_list.html", {"categories": categories})
 
 
 def dhikr_by_category(request, cat_id):
-  category = get_object_or_404(Category, id=cat_id)
-  dhikr_list = Dhikr.objects.filter(category=category)
-  return render(request, "dhikr_by_category.html", 
-                {"category": category, "dhikr": dhikr_list})
+    category = get_object_or_404(Category, id=cat_id)
+    dhikr_list = Dhikr.objects.filter(category=category)
+    return render(request, "dhikr_by_category.html", 
+                    {"category": category, "dhikr": dhikr_list})
 
 def dhikr_detail(request, dhikr_id):
 
@@ -75,7 +75,7 @@ def edit_dhikr(request, dhikr_id):
 
     return render(request, "edit_dhikr.html", {"form": form})
 
-def delete_dhikr(request, dhikr_id):
+def delete_dhikr(dhikr_id):
 
     dhikr = Dhikr.objects.get(id=dhikr_id)
 
