@@ -1,23 +1,15 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <h2>تعديل الذكر</h2>
 
 <form method="post">
+  {% csrf_token %}
 
-    {% csrf_token %}
+  <div class="mb-3">{{ form.text }}</div>
 
-    <div class="mb-3">
-        {{ form.text }}
-    </div>
+  <div class="mb-3">{{ form.category }}</div>
 
-    <div class="mb-3">
-        {{ form.category }}
-    </div>
-
-    <button class="btn btn-primary">حفظ التعديل</button>
-
+  <button class="btn btn-primary">حفظ التعديل</button>
 </form>
 
 {% endblock %}

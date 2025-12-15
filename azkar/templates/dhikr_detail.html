@@ -1,143 +1,115 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <h3 class="mb-3">الذكر الكامل</h3>
 
-
-
 <div class="card p-4 shadow">
+  <p id="dhikrText" class="dhikr-text">{{ item.text }}</p>
 
-    <p id="dhikrText" class="dhikr-text">
+  <div class="mt-3">
+    <button onclick="copyDhikr()" class="btn btn-success me-2">
+      <i class="bi bi-clipboard"></i>
+      نسخ
+    </button>
 
-        {{ item.text }}
+    <button onclick="shareDhikr()" class="btn btn-primary me-2">
+      <i class="bi bi-share"></i>
+      مشاركة
+    </button>
 
-    </p>
+    <a href="{% url 'edit_dhikr' item.id %}" class="btn btn-warning me-2">
+      <i class="bi bi-pencil"></i>
+      تعديل
+    </a>
 
+    <a
+      href="{% url 'delete_dhikr' item.id %}"
+      class="btn btn-danger me-2"
+      onclick="return confirm('هل أنت متأكد من الحذف؟');"
+    >
+      <i class="bi bi-trash"></i>
+      حذف
+    </a>
 
+    <button onclick="changeSize(2)" class="btn btn-secondary me-2">
+      <i class="bi bi-zoom-in"></i>
+    </button>
 
-    <div class="mt-3">
+    <button onclick="changeSize(-2)" class="btn btn-secondary me-2">
+      <i class="bi bi-zoom-out"></i>
+    </button>
 
-        <button onclick="copyDhikr()" class="btn btn-success me-2">
-            <i class="bi bi-clipboard"></i>
-            نسخ
-        </button>
-
-        <button onclick="shareDhikr()" class="btn btn-primary me-2">
-            <i class="bi bi-share"></i>
-            مشاركة
-        </button>
-
-        <a href="{% url 'edit_dhikr' item.id %}" class="btn btn-warning me-2">
-            <i class="bi bi-pencil"></i>
-            تعديل
-        </a>
-
-        <a href="{% url 'delete_dhikr' item.id %}" 
-           class="btn btn-danger me-2"
-           onclick="return confirm('هل أنت متأكد من الحذف؟');">
-            <i class="bi bi-trash"></i>
-            حذف
-        </a>
-
-        <button onclick="changeSize(2)" class="btn btn-secondary me-2">
-            <i class="bi bi-zoom-in"></i>
-        </button>
-
-        <button onclick="changeSize(-2)" class="btn btn-secondary me-2">
-            <i class="bi bi-zoom-out"></i>
-        </button>
-
-        <button onclick="toggleDark()" class="btn btn-dark">
-            <i class="bi bi-moon"></i>
-        </button>
-
-    </div>
-
+    <button onclick="toggleDark()" class="btn btn-dark">
+      <i class="bi bi-moon"></i>
+    </button>
+  </div>
 </div>
-
-
 
 <div class="d-flex justify-content-between mt-3">
-
-    {% if prev %}
-    <a href="{% url 'dhikr_detail' prev.id %}" class="btn btn-outline-dark">
-        <i class="bi bi-arrow-right"></i> السابق
-    </a>
-    {% endif %}
-    
-    {% if next %}
-    <a href="{% url 'dhikr_detail' next.id %}" class="btn btn-outline-dark">
-        <i class="bi bi-arrow-left"></i>التالي
-    </a>
-    {% endif %}
-
+  {% if prev %}
+  <a href="{% url 'dhikr_detail' prev.id %}" class="btn btn-outline-dark">
+    <i class="bi bi-arrow-right"></i> السابق
+  </a>
+  {% endif %} {% if next %}
+  <a href="{% url 'dhikr_detail' next.id %}" class="btn btn-outline-dark">
+    <i class="bi bi-arrow-left"></i>التالي
+  </a>
+  {% endif %}
 </div>
 
-
-
 <script>
-function copyDhikr(){
-    navigator.clipboard.writeText(document.getElementById("dhikrText").innerText);
+  function copyDhikr() {
+    navigator.clipboard.writeText(
+      document.getElementById("dhikrText").innerText
+    );
     alert("تم النسخ!");
-}
+  }
 
-
-
-function shareDhikr(){
+  function shareDhikr() {
     let text = document.getElementById("dhikrText").innerText;
 
-    if(navigator.share){
-        navigator.share({text});
-    }else{
-        alert("جهازك لا يدعم المشاركة.");
+    if (navigator.share) {
+      navigator.share({ text });
+    } else {
+      alert("جهازك لا يدعم المشاركة.");
     }
-}
+  }
 
+  let size = 27;
 
-
-let size = 27;
-
-function changeSize(v){
+  function changeSize(v) {
     size += v;
 
-    if(size < 18) size = 18;
-    if(size > 45) size = 45;
+    if (size < 18) size = 18;
+    if (size > 45) size = 45;
 
     document.getElementById("dhikrText").style.fontSize = size + "px";
-}
+  }
 
+  let dark = false;
 
-
-let dark = false;
-
-function toggleDark(){
+  function toggleDark() {
     dark = !dark;
 
-    if(dark){
-        document.body.style.background = "#111";
-        document.body.style.color = "white";
-    }else{
-        document.body.style.background = "#f3efe5";
-        document.body.style.color = "black";
+    if (dark) {
+      document.body.style.background = "#111";
+      document.body.style.color = "white";
+    } else {
+      document.body.style.background = "#f3efe5";
+      document.body.style.color = "black";
     }
-}
+  }
 
+  var nextUrl = "{% if prev %}{% url 'dhikr_detail' prev.id %}{% endif %}";
+  var prevUrl = "{% if next %}{% url 'dhikr_detail' next.id %}{% endif %}";
 
-
-var nextUrl = "{% if prev %}{% url 'dhikr_detail' prev.id %}{% endif %}";
-var prevUrl = "{% if next %}{% url 'dhikr_detail' next.id %}{% endif %}";
-
-document.addEventListener("keydown", function(e){
-
-    if(e.key === "ArrowRight" && nextUrl){
-        window.location.href = nextUrl;
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" && nextUrl) {
+      window.location.href = nextUrl;
     }
-    if(e.key === "ArrowLeft" && prevUrl){
-        window.location.href = prevUrl;
+    if (e.key === "ArrowLeft" && prevUrl) {
+      window.location.href = prevUrl;
     }
-
-});
+  });
 </script>
 
 {% endblock %}
